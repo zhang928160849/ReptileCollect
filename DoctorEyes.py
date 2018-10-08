@@ -105,16 +105,28 @@ df2 = df.sort_index(axis = 1)
 print(df2)
 print(df2,file=f)
 
-result = result_by_any('age','月薪：',20,35)
-df = pd.DataFrame(result,index=['人数','百分比']) #columns=['160cm','162cm']
-df2 = df.sort_index(axis = 1)
-print(df2)
-print(df2,file=f)
+# result = result_by_any('age','月薪：',20,35)
+# df = pd.DataFrame(result,index=['人数','百分比']) #columns=['160cm','162cm']
+# df2 = df.sort_index(axis = 1)
+# print(df2)
+# print(df2,file=f)
 
-
-for i in select_user_by_score(80,80,20,25):
+result = result_by_any('age','r公司行业：',20,35)
+print(result)
+# df = pd.DataFrame(result,index=['人数','百分比']) #columns=['160cm','162cm']
+# df2 = df.sort_index(axis = 1)
+# print(df2)
+# print(df2,file=f)
+for i in select_user_by_score(80,80,20,30):
     print(i)
 # # 选中某一行
 # print(df2.iloc[[0]])
+
+
+
+# ----------------------------------------------------------------------------------------
+#在经过select_user_by_score之后应将加上了得分的用户会写到数据库中
+# 之后的所有的统计查询基于数据库取数 计算
+# ----------------------------------------------------------------------------------------
 f.close()
 
