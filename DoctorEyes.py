@@ -6,8 +6,8 @@ f=open('result.txt','w',encoding='UTF-8-sig')
 pd.set_option('display.width',10000)
 pd.set_option('display.max_rows',500)
 pd.set_option('display.max_columns',500)
-file_name = 'female2.txt'
-# female2.txt
+file_name = 'male.txt'
+# male.txt
 
 # 权重的配置项，暂时写成hello code
 # 加权打分排名
@@ -58,9 +58,15 @@ def score_user(users):
         users_af_score.append(i)
     return users_af_score
 
-def select_user_by_score(score_start,score_end):
-    users = read_data()
+def select_user_by_score(score_start,score_end,age_begin,age_end):
     query_users = []
+
+    users_be = read_data()
+    users = []
+    for i in users_be:
+        if age_begin <= int(i['age'][:2]) <= age_end:
+            users.append(i)
+
     for i in users:
         if score_start <= int(i['分数']) <= score_end:
             query_users.append(i)
@@ -92,32 +98,21 @@ def result_by_any(by_str, request, begin, end):
 # --------------------------------------------------------------------------------------------------------
 # 执行
 # --------------------------------------------------------------------------------------------------------
-result = result_by_any('age','身高：',0,40)
+result = result_by_any('age','身高：',20,35)
 # columns=[  str(i)+'cm' for i in range(158,190) 的原因是因为 得出的数据是xxxcm格式 所以用迭代器拼接
 df = pd.DataFrame(result,index=['人数','百分比'],columns=[  str(i)+'cm' for i in range(158,190) ]) #columns=['160cm','162cm']
 df2 = df.sort_index(axis = 1)
 print(df2)
 print(df2,file=f)
 
-result = result_by_any('age','月薪：',0,40)
+result = result_by_any('age','月薪：',20,35)
 df = pd.DataFrame(result,index=['人数','百分比']) #columns=['160cm','162cm']
 df2 = df.sort_index(axis = 1)
 print(df2)
 print(df2,file=f)
 
-result = result_by_any('age','学历：',0,40)
-df = pd.DataFrame(result,index=['人数','百分比']) #columns=['160cm','162cm']
-df2 = df.sort_index(axis = 1)
-print(df2)
-print(df2,file=f)
 
-result = result_by_any('age','分数',0,40)
-df = pd.DataFrame(result,index=['人数','百分比']) #columns=['160cm','162cm']
-df2 = df.sort_index(axis = 1)
-print(df2)
-print(df2,file=f)
-
-for i in select_user_by_score(80,80):
+for i in select_user_by_score(80,80,20,25):
     print(i)
 # # 选中某一行
 # print(df2.iloc[[0]])
