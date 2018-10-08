@@ -134,15 +134,10 @@ print(df2,file=f)
 # df2 = df.sort_index(axis = 1)
 # print(df2)
 # print(df2,file=f)
-
-result = result_by_any('age','星座：',20,35)
-print(result)
-# df = pd.DataFrame(result,index=['人数','百分比']) #columns=['160cm','162cm']
-# df2 = df.sort_index(axis = 1)
-# print(df2)
-# print(df2,file=f)
 for i in select_user_by_score(70,80,20,30):
     print(i)
+
+
 # # 选中某一行
 # print(df2.iloc[[0]])
 
