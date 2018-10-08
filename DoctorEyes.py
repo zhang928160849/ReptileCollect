@@ -1,5 +1,7 @@
 import json
 import pandas as pd
+import re
+
 from pandas import DataFrame,Series
 f=open('result.txt','w',encoding='UTF-8-sig')
 # female2.txt male.txt
@@ -18,7 +20,7 @@ file_name = 'male.txt'
 # 房 30 {'已购住房 ', '需要时购置 ', '独自租房 ', '-- ', '已购房（无贷款） ', '已购房（有贷款） ',
 #        '与父母同住 ', '暂未购房 ', '住单位房 ', '住亲朋家 ', '与人合租 '}
 #
-#
+#身高 5 分段给权值
 # fun(年龄段) => 比例 of 有房，有车，工资分布
 score_weight = {'住房：':{'已购住房 ': 25, '需要时购置 ': 15, '独自租房 ': 8, '已购房（无贷款） ': 30, '已购房（有贷款） ': 20,
              '与父母同住 ': 10, '暂未购房 ': 5, '住单位房 ': 18, '住亲朋家 ':2 , '与人合租 ': 2, '-- ': 10},
@@ -42,6 +44,27 @@ def read_data():
     users = score_user(users)
     return users
 
+def score_height(height):
+    try:
+        heightstr = re.findall(r'[0-9]*cm', height)
+        heightstr = heightstr[0]
+        heightstr = heightstr[0:3]
+        if 160 <= int(heightstr) < 165:
+            return 1
+        elif 165 <= int(heightstr) < 170:
+            return 2
+        elif 170 <= int(heightstr) < 175:
+            return 3
+        elif 175 <= int(heightstr) < 180:
+            return 4
+        elif 180 <= int(heightstr) < 190:
+            return 5
+        else:
+            return 0
+    except Exception as e:
+        print(e)
+
+
 def score_user(users):
     # 对用户进行打分
     users_af_score = []
@@ -53,6 +76,7 @@ def score_user(users):
             i['分数'] += score_weight['购车：'][i['购车：']]
             i['分数'] += score_weight['住房：'][i['住房：']]
             i['分数'] += score_weight['月薪：'][i['月薪：']]
+            i['分数'] += score_height(i['身高：'])
         except Exception:
             i['分数'] = 0
         users_af_score.append(i)
@@ -111,13 +135,13 @@ print(df2,file=f)
 # print(df2)
 # print(df2,file=f)
 
-result = result_by_any('age','r公司行业：',20,35)
+result = result_by_any('age','星座：',20,35)
 print(result)
 # df = pd.DataFrame(result,index=['人数','百分比']) #columns=['160cm','162cm']
 # df2 = df.sort_index(axis = 1)
 # print(df2)
 # print(df2,file=f)
-for i in select_user_by_score(80,80,20,30):
+for i in select_user_by_score(70,80,20,30):
     print(i)
 # # 选中某一行
 # print(df2.iloc[[0]])
