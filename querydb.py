@@ -8,8 +8,14 @@ client = pymongo.MongoClient(MONGO_URL)
 db = client[MONGO_DB]
 collection = db[MONGO_COLLECTION]
 f=open('out.txt','w',encoding='UTF-8-sig')
+lists = list()
 for i in collection.find():
     print(i)
     i.pop('_id')
-    print(i,file=f)
+    try:
+        if i['id'] not in lists:
+            print(i, file=f)
+            lists.append(i['id'])
+    except Exception as e:
+        print(e)
 f.close()

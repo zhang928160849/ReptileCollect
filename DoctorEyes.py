@@ -117,7 +117,7 @@ df2 = df.sort_index(axis = 1)
 print(df2)
 print(df2,file=f)
 
-for i in select_user_by_score(60,80):
+for i in select_user_by_score(80,80):
     print(i)
 # # 选中某一行
 # print(df2.iloc[[0]])
