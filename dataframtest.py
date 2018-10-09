@@ -29,5 +29,13 @@ print(usersDF['age'].value_counts())
 # groupby 函数分类
 print(usersDF['星座：'].groupby(usersDF['age']).value_counts())
 print(usersDF['星座：'].groupby([usersDF['age'],usersDF['血型：']]).value_counts())
-
+# agg函数
+print(usersDF['age'].groupby(usersDF['星座：']).agg(['max','min']))
+# apply() 将函数递归运用到一列上
+def test_return(age):
+    if 18 < int(age) < 25:
+        return 1
+    if 25 <= int(age) < 35:
+        return 0
+print(usersDF['age'].apply(test_return))
 
