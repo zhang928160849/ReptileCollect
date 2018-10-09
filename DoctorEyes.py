@@ -13,15 +13,15 @@ file_name = 'male.txt'
 
 # 权重的配置项，暂时写成hello code
 # 加权打分排名
-# 学历 10 {'高中中专及以下', '大专', '本科', '硕士', '博士'}
-# 收入 30 {'2000～5000元 ', '10000～20000元 ', '-- ', '20000～50000元 ', '5000～10000元 ', '2000元以下 '}
-# 车 15 {'单位用车 ', '暂未购车 ', '需要时购置 ', '已购车（经济型） ', '-- ', '已经购车 ', '已购车（中档型） ', '已购车（豪华型） '}
+# 1 学历 10 {'高中中专及以下', '大专', '本科', '硕士', '博士'}
+# 2 收入 30 {'2000～5000元 ', '10000～20000元 ', '-- ', '20000～50000元 ', '5000～10000元 ', '2000元以下 '}
+# 3 车 15 {'单位用车 ', '暂未购车 ', '需要时购置 ', '已购车（经济型） ', '-- ', '已经购车 ', '已购车（中档型） ', '已购车（豪华型） '}
 #
-# 房 30 {'已购住房 ', '需要时购置 ', '独自租房 ', '-- ', '已购房（无贷款） ', '已购房（有贷款） ',
+# 4 房 30 {'已购住房 ', '需要时购置 ', '独自租房 ', '-- ', '已购房（无贷款） ', '已购房（有贷款） ',
 #        '与父母同住 ', '暂未购房 ', '住单位房 ', '住亲朋家 ', '与人合租 '}
 #
-# 身高 5 分段给权值
-# 身高和体重的比值（体脂率）3 分段给权值
+# 5 身高 5 分段给权值
+# 6 身高和体重的比值（BMI指数）1 合格与不合格
 # fun(年龄段) => 比例 of 有房，有车，工资分布
 score_weight = {'住房：':{'已购住房 ': 25, '需要时购置 ': 15, '独自租房 ': 8, '已购房（无贷款） ': 30, '已购房（有贷款） ': 20,
              '与父母同住 ': 10, '暂未购房 ': 5, '住单位房 ': 18, '住亲朋家 ':2 , '与人合租 ': 2, '-- ': 10},
@@ -65,6 +65,25 @@ def score_height(height):
     except Exception as e:
         print(e)
 
+def score_BMI(height,weight):
+#     体质指数（BMI）=体重（kg）÷身高^2（m）
+#     当BMI指数为18.5～23.9时属正常。
+    try:
+        heightstr = re.findall(r'[0-9]*cm', height)
+        heightstr = heightstr[0]
+        heightstr = heightstr[0:3]
+        weightstr = re.findall(r'[0-9]*公斤', weight)
+        weightstr = heightstr[0]
+        weightstr = heightstr[0:2]
+        BMI = weightstr / (int(heightstr) * int(heightstr))
+        if 18.5 < BMI < 24:
+            return 1
+        else:
+            return 0
+    except Exception as e:
+        return 0
+
+
 
 def score_user(users):
     # 对用户进行打分
@@ -78,6 +97,7 @@ def score_user(users):
             i['分数'] += score_weight['住房：'][i['住房：']]
             i['分数'] += score_weight['月薪：'][i['月薪：']]
             i['分数'] += score_height(i['身高：'])
+            i['分数'] += score_BMI(i['身高：'],i['体重：'])
         except Exception:
             i['分数'] = 0
         users_af_score.append(i)
@@ -125,7 +145,7 @@ def result_by_any(by_str, request, begin, end):
 # --------------------------------------------------------------------------------------------------------
 result = result_by_any('age','身高：',20,35)
 # columns=[  str(i)+'cm' for i in range(158,190) 的原因是因为 得出的数据是xxxcm格式 所以用迭代器拼接
-df = pd.DataFrame(result,index=['人数','百分比'],columns=[  str(i)+'cm' for i in range(158,190) ]) #columns=['160cm','162cm']
+df = pd.DataFrame(result,index=['人数','百分比'],columns=[ str(i)+'cm' for i in range(158,190) ]) #columns=['160cm','162cm']
 df2 = df.sort_index(axis = 1)
 print(df2)
 print(df2,file=f)
