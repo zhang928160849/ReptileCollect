@@ -14,6 +14,7 @@ def read_data():
     for i in c:
         d = i.replace("'", '"').replace('\\', '')
         e = json.loads(d)
+        e['age'] = e['age'][0:2]
         users.append(e)
     return users
 users = read_data()
@@ -22,4 +23,11 @@ usersDF = pd.DataFrame(users)
 # ------------------------------------------------------------------
 # 统计分析都基于dataframtest做
 # ------------------------------------------------------------------
-print(usersDF)
+# value_counts 统计某列的次数
+print(usersDF.age.value_counts())
+print(usersDF['age'].value_counts())
+# groupby 函数分类
+print(usersDF['星座：'].groupby(usersDF['age']).value_counts())
+print(usersDF['星座：'].groupby([usersDF['age'],usersDF['血型：']]).value_counts())
+
+
