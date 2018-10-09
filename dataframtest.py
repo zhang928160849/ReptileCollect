@@ -38,4 +38,3 @@ def test_return(age):
     if 25 <= int(age) < 35:
         return 0
 print(usersDF['age'].apply(test_return))
-
