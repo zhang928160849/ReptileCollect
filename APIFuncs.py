@@ -53,19 +53,22 @@ usersDF['分数'] = usersDF['分数'].astype('int')
 # --------------------------------------------------------------------------------------------------
 #### 需要向外expose成api的func #####
 # --------------------------------------------------------------------------------------------------
-# 根据分数段返回这一段的用户的各项指标的统计信息
+# 功能一根据分数段返回这一段的用户的各项指标的统计信息
 def get_analyis_data_by_score(SBeign,SEnd,attr):
     usersAS = usersDF[usersDF['分数'] > SBeign][usersDF['分数'] < SEnd]
     userASHeight = usersAS[attr].value_counts()
-    sss = usersAS[attr].sum()
-    dddd = pd.DataFrame(userASHeight)
-    dddd['频率'] = dddd/dddd[attr].sum()
-    print(dddd)
-    return dddd.to_dict()
+    userASHeightDF = pd.DataFrame(userASHeight)
+    userASHeightDF['频率'] = userASHeightDF/userASHeightDF[attr].sum()
+    return userASHeightDF.to_dict()
+
+# 功能二 根据用户的信息取打分并返回分数
+def get_score_by_singleUserInfor():
+    pass
 # ----------------------------------------------------------------------------------------------------
-# example
+# example 提供api调用时的样例
 # ----------------------------------------------------------------------------------------------------
 usersR = get_analyis_data_by_score( 50,70,'身高')
 print(usersR)
 usersR = get_analyis_data_by_score( 50,70,'住房')
 print(usersR)
+
