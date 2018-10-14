@@ -3,9 +3,6 @@ import pandas as pd
 import re
 import pymysql
 
-pd.set_option('display.width',10000)
-pd.set_option('display.max_rows',500)
-pd.set_option('display.max_columns',500)
 f=open('1.txt','w',encoding='UTF-8-sig')
 file_name = 'out.txt'
 

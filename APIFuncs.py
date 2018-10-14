@@ -2,22 +2,34 @@ import json
 import pandas as pd
 import re
 import pymysql
-
+pd.set_option('display.width',10000)
+pd.set_option('display.max_rows',500)
+pd.set_option('display.max_columns',500)
 def query_users():
     db = pymysql.connect(host='localhost', user='root', password='root', port=3306,db='spiders6')
     cursor = db.cursor()
     sql = 'SELECT * FROM ustest2'
+    columns = []
+    users2 = []
     try:
         cursor.execute(sql)
         users = cursor.fetchall()
+        cols = cursor.description
         db.close()
+        for col in cols:
+            column = col[0]
+            columns.append(column)
+        for user in users:
+            users2.append(user)
     except Exception as e:
         print(e)
-    return users
+    return users2,columns
 
-users = query_users()
+users,cols = query_users()
 print(users)
-usersDF = pd.DataFrame(users,columns=['two', 'three'])
+print(cols)
+usersDF = pd.DataFrame(users,columns=cols)
+print(usersDF)
 # -----------------------------------------------------------------------------------------
 # 统计分析都基于dataframtest做
 # -----------------------------------------------------------------------------------------
