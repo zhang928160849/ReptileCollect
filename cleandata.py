@@ -3,7 +3,7 @@ import pandas as pd
 import re
 import pymysql
 
-f=open('1.txt','w',encoding='UTF-8-sig')
+# 清洗数据后存入DB
 file_name = 'out.txt'
 
 score_weight = {'住房：':{'已购住房 ': 25, '需要时购置 ': 15, '独自租房 ': 8, '已购房（无贷款） ': 30, '已购房（有贷款） ': 20,
@@ -135,10 +135,12 @@ def convert_dict(users):
     return users_new
 
 
+
+# 第一次使用create_table()创建db
 # create_table()#创建数据库以及所需的表
 users = read_data()
 users = convert_dict(users)
-# save_db(users)
+save_db(users)
 
 
 

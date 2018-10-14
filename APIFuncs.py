@@ -2,6 +2,9 @@ import json
 import pandas as pd
 import re
 import pymysql
+
+# 函数池 提供从DB抽数分析并提供给api使用
+
 pd.set_option('display.width',10000)
 pd.set_option('display.max_rows',500)
 pd.set_option('display.max_columns',500)
@@ -26,11 +29,10 @@ def query_users():
     return users2,columns
 
 users,cols = query_users()
-
 usersDF = pd.DataFrame(users,columns=cols)
 usersDF['分数'] = usersDF['分数'].astype('int')
 # -----------------------------------------------------------------------------------------
-# 统计分析都基于dataframtest做
+# pandas用法
 # -----------------------------------------------------------------------------------------
 # value_counts 统计某列的次数
 # print(usersDF.age.value_counts())
@@ -62,13 +64,29 @@ def get_analyis_data_by_score(SBeign,SEnd,attr):
     return userASHeightDF.to_dict()
 
 # 功能二 根据用户的信息取打分并返回分数
-def get_score_by_singleUserInfor():
+def get_score_by_singleUserInfo():
     pass
+
+# 功能三 根据用户的信息
+
+# 功能四 根据用户的信息
+
+
+
 # ----------------------------------------------------------------------------------------------------
 # example 提供api调用时的样例
 # ----------------------------------------------------------------------------------------------------
+# 功能一示例
 usersR = get_analyis_data_by_score( 50,70,'身高')
 print(usersR)
-usersR = get_analyis_data_by_score( 50,70,'住房')
+usersR = get_analyis_data_by_score( 20,40,'住房')
 print(usersR)
+# 功能二示例
+
+
+
+# 功能三示例
+
+
+# 功能四示例
 

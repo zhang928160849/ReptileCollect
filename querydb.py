@@ -1,5 +1,7 @@
 import pymongo
 
+
+# 暂时提供上线数据，之后废除
 MONGO_URL = 'localhost'
 MONGO_DB = 'jia36'
 # MONGO_COLLECTION = 'users_female'

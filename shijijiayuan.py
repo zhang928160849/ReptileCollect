@@ -10,6 +10,7 @@ import pymongo
 import re
 import records
 
+#爬虫程序
 
 male = True
 MONGO_URL = 'localhost'
