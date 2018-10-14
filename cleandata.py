@@ -6,8 +6,8 @@ import pymysql
 pd.set_option('display.width',10000)
 pd.set_option('display.max_rows',500)
 pd.set_option('display.max_columns',500)
-f=open('result.txt','w',encoding='UTF-8-sig')
-file_name = 'male.txt'
+f=open('1.txt','w',encoding='UTF-8-sig')
+file_name = 'out.txt'
 
 score_weight = {'住房：':{'已购住房 ': 25, '需要时购置 ': 15, '独自租房 ': 8, '已购房（无贷款） ': 30, '已购房（有贷款） ': 20,
              '与父母同住 ': 10, '暂未购房 ': 5, '住单位房 ': 18, '住亲朋家 ':2 , '与人合租 ': 2, '-- ': 10},
@@ -91,19 +91,19 @@ def create_table():
     db = pymysql.connect(host='localhost', user='root', password='root', port=3306)
     cursor = db.cursor()
 
-    cursor.execute("CREATE DATABASE spiders5 DEFAULT CHARACTER SET utf8")
+    cursor.execute("CREATE DATABASE spiders6 DEFAULT CHARACTER SET utf8")
     db.close()
-    db = pymysql.connect(host='localhost', user='root', password='root', port=3306,db='spiders5')
+    db = pymysql.connect(host='localhost', user='root', password='root', port=3306,db='spiders6')
     cursor = db.cursor()
     sql = 'CREATE TABLE IF NOT EXISTS ustest2 (id varchar(255) NOT NULL,' \
-          '月薪 varchar(255) NOT NULL,住房 varchar(255) NOT NULL,购车 varchar(255) NOT NULL,' \
-          '学历 varchar(255) NOT NULL,体重 varchar(255) NOT NULL,身高 varchar(255) NOT NULL,' \
-          '分数 varchar(255) NOT NULL,年龄 varchar(255) NOT NULL)'
+          '月薪 varchar(255) ,住房 varchar(255) ,购车 varchar(255) ,' \
+          '学历 varchar(255) ,体重 varchar(255) ,身高 varchar(255) ,' \
+          '分数 varchar(255) ,年龄 varchar(255) )'
     cursor.execute(sql)
     db.close()
 
 def save_db(users):
-    db = pymysql.connect(host='localhost', user='root', password='root', port=3306,db='spiders5')
+    db = pymysql.connect(host='localhost', user='root', password='root', port=3306,db='spiders6')
     cursor = db.cursor()
     table = 'ustest2'
     for user in users:
@@ -121,11 +121,10 @@ def save_db(users):
             print(e)
             db.rollback()
 
-
 def convert_dict(users):
     users_new = []
-    users_new_line = {}
     for user in users:
+        users_new_line = {}
         users_new_line['id'] = user['id']
         users_new_line['月薪'] = user['月薪：']
         users_new_line['住房'] = user['住房：']
@@ -138,74 +137,11 @@ def convert_dict(users):
         users_new.append(users_new_line)
     return users_new
 
-# db = pymysql.connect(host='localhost', user='root', password='root', port=3306,db='spiders')
-# cursor = db.cursor()
-# sql = 'SELECT * FROM ustest'
-# cursor.execute(sql)
-# print(cursor.rowcount)
-# results = cursor. fetchall()
-# print(results)
 
-
-create_table()
+# create_table()#创建数据库以及所需的表
 users = read_data()
 users = convert_dict(users)
-save_db(users)
-# 将计算出了分数经过了数据整理的用户数据存入db中
-
-
-
-usersDF = pd.DataFrame(users)
-#将经过了数据分析的数据存入DB中
-
-
-# -----------------------------------------------------------------------------------------
-# 统计分析都基于dataframtest做
-# -----------------------------------------------------------------------------------------
-# value_counts 统计某列的次数
-# print(usersDF.head(5))
-# print(usersDF.age.value_counts())
-# print(usersDF['age'].value_counts())
-# # groupby 函数分类
-# print(usersDF['星座：'].groupby(usersDF['age']).value_counts())
-# print(usersDF['星座：'].groupby([usersDF['age'],usersDF['血型：']]).value_counts())
-# # agg函数
-# print(usersDF['age'].groupby(usersDF['星座：']).agg(['max','min']))
-# # apply() 将函数递归运用到一列上
-# def test_return(age):
-#     if 18 < int(age) < 25:
-#         return 1
-#     if 25 <= int(age) < 35:
-#         return 0
-# print(usersDF['age'].apply(test_return))
-
-
-# --------------------------------------------------------------------------------------------------
-#### 需要向外expose成api的func #####
-# --------------------------------------------------------------------------------------------------
-#功能一 根据一个用户输入的信息进行打分并返回分数以及排名匹配的异性用户的信息
-# 输入参数为dict
-def score_single_user(singleUserDict):
-    # users 存放要返回的异性用户们的信息
-    users = []
-    score = 0
-    try:
-        score += score_weight['学历：'][singleUserDict['学历：']]
-        score += score_weight['购车：'][singleUserDict['购车：']]
-        score += score_weight['住房：'][singleUserDict['住房：']]
-        score += score_weight['月薪：'][singleUserDict['月薪：']]
-        score += score_height(singleUserDict['身高：'])
-        score += score_BMI(singleUserDict['身高：'], singleUserDict['体重：'])
-    except Exception as e:
-        print(e)
-    # 根据score从数据库中查询出相应的男用户的信息
-    # 并将此用户的信息存储到db中
-    return score,users
-
-# 功能二 根据某一项查询出对应的用户的某项信息的统计
-def get_single_attr_by_single_attr():
-    pass
-
+# save_db(users)
 
 
 

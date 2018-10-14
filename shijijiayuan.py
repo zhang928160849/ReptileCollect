@@ -14,7 +14,7 @@ import records
 male = True
 MONGO_URL = 'localhost'
 MONGO_DB = 'jia36'
-MONGO_DB2 = 'jia36'
+MONGO_DB2 = 'jia39'
 # MONGO_COLLECTION = 'users_female'
 MONGO_COLLECTION = 'user_male'
 client = pymongo.MongoClient(MONGO_URL)
