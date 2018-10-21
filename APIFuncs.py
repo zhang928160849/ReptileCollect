@@ -42,7 +42,10 @@ usersDF['分数'] = usersDF['分数'].astype('int')
 # print(usersDF['星座：'].groupby(usersDF['age']).value_counts())
 # print(usersDF['星座：'].groupby([usersDF['age'],usersDF['血型：']]).value_counts())
 # # agg函数
-# print(usersDF['age'].groupby(usersDF['星座：']).agg(['max','min']))
+# print(usersDF['ag e'].groupby(usersDF['星座：']).agg(['max','min']))
+# 重置index和columns
+# df.reindex(index=['c', 'f', 'b'], columns=['three', 'two', 'one'])
+#
 # apply() 将函数递归运用到一列上
 # def test_return(age):
 #     if 18 < int(age) < 25:
@@ -61,11 +64,16 @@ def get_analyis_data_by_score(SBeign,SEnd,attr):
     userASHeight = usersAS[attr].value_counts()
     userASHeightDF = pd.DataFrame(userASHeight)
     userASHeightDF['频率'] = userASHeightDF/userASHeightDF[attr].sum()
+    userASHeightDF['频率'].sort_index
     return userASHeightDF.to_dict()
 
-# 功能二 根据用户的信息取打分并返回分数
-def get_score_by_singleUserInfo():
-    pass
+# 功能二 根据用户的某一项进行分类返回另一项信息
+def getUserAttrByGroup(str1,str2):
+    userdf2 = usersDF.groupby([str1,str2]).count()
+    userdf2 = userdf2[['id']]
+    userdf2.columns = ['数量']
+    return userdf2
+
 
 # 功能三 根据用户的信息
 
@@ -77,13 +85,13 @@ def get_score_by_singleUserInfo():
 # example 提供api调用时的样例
 # ----------------------------------------------------------------------------------------------------
 # 功能一示例
-usersR = get_analyis_data_by_score( 50,70,'身高')
-print(usersR)
-usersR = get_analyis_data_by_score( 20,40,'住房')
-print(usersR)
+# usersR = get_analyis_data_by_score( 50,70,'身高')
+# print(usersR)
+# usersR = get_analyis_data_by_score( 20,40,'住房')
+# print(usersR)
 # 功能二示例
-
-
+print(getUserAttrByGroup('分数','身高'))
+print(getUserAttrByGroup('分数','住房'))
 
 # 功能三示例
 

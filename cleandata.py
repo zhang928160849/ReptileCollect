@@ -95,7 +95,8 @@ def create_table():
     sql = 'CREATE TABLE IF NOT EXISTS ustest2 (id varchar(255) NOT NULL,' \
           '月薪 varchar(255) ,住房 varchar(255) ,购车 varchar(255) ,' \
           '学历 varchar(255) ,体重 varchar(255) ,身高 varchar(255) ,' \
-          '分数 varchar(255) ,年龄 varchar(255) )'
+          '分数 varchar(255) ,年龄 varchar(255) ,吸烟 varchar(255) ,' \
+          '锻炼习惯 varchar(255) ,星座 varchar(255) , 毕业院校 varchar(255) )'
     cursor.execute(sql)
     db.close()
 
@@ -131,6 +132,10 @@ def convert_dict(users):
         users_new_line['身高'] = user['身高：']
         users_new_line['年龄'] = user['age']
         users_new_line['分数'] = user['分数']
+        users_new_line['吸烟'] = user['r吸烟：']
+        users_new_line['锻炼习惯'] = user['r锻炼习惯：']
+        users_new_line['星座'] = user['星座：']
+        users_new_line['毕业院校'] = user['r毕业院校：']
         users_new.append(users_new_line)
     return users_new
 
